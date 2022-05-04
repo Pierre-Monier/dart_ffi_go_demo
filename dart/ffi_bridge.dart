@@ -18,10 +18,13 @@ class FFIBridge {
   }
 
   int sum(int a, int b) {
-    final _sum = _lookup<
-            ffi.NativeFunction<
-                ffi.Int32 Function(ffi.Int32 a, ffi.Int32 b)>>('Sum')
-        .asFunction<int Function(int a, int b)>();
-    return _sum(a, b);
+    final sumFunctionInLibrary = _lookup<
+            ffi.NativeFunction<ffi.Int32 Function(ffi.Int32 a, ffi.Int32 b)>>(
+        'Sum');
+
+    final convertedToDartSumFunction =
+        sumFunctionInLibrary.asFunction<int Function(int a, int b)>();
+
+    return convertedToDartSumFunction(a, b);
   }
 }
